@@ -1,0 +1,14 @@
+{
+	"user": "Veseon",
+	"repo": "streamer_item_extra_id",
+	"tag": "1.0.0",
+	"entry": "test.pwn",
+	"output": "gamemodes/test.amx",
+	"dependencies": [
+		"openmultiplayer/omp-stdlib",
+		"pawn-lang/samp-stdlib@open.mp",
+		"pawn-lang/pawn-stdlib@open.mp",
+		"samp-incognito/samp-streamer-plugin:v2.9.6",
+		"pawn-lang/YSI-Includes@5.x"
+	]
+}
