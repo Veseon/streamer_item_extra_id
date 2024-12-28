@@ -37,7 +37,7 @@ sampctl package install Veseon/streamer_item_extra_id
 Include in your code and begin using the library:
 
 ```pawn
-#include <streamer_item_extra_id>
+#include <item_extra_id>
 ```
 
 ## Usage
@@ -48,6 +48,12 @@ the source code, direct users there. If not, list your API and describe it well
 in this section. If your library is passive and has no API, simply omit this
 section.
 -->
+
+```pawn
+bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
+bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
+bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
+```
 
 ## Testing
 

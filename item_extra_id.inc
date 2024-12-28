@@ -1,7 +1,7 @@
 //----------------------------------------------------------
 //
 //  Streamer Item Extra Id Library
-//  Dependencies: omp-stdlib, YSI-Includes, samp-streamer-plugin
+//  Dependencies: omp-stdlib, samp-streamer-plugin, YSI-Includes (y_hooks)
 //  Copyright (c) 2024 by Veseon.
 //
 //----------------------------------------------------------
@@ -22,7 +22,33 @@
 
 //----------------------------------------------------------
 
-#if !defined MAX_EXTRA_ID_TYPES && !defined EXTRA_ID_TYPE
+/*
+    Example enum for extraid tags & definitions.
+    Add before including the dependency.
+
+    enum EXTRA_ID_TYPE
+    {
+        EXTRA_ID_TYPE_ENTRANCE,
+        EXTRA_ID_TYPE_HOUSE,
+        EXTRA_ID_TYPE_BUSINESS
+    }
+
+    If you want auto completion you might need to define them aswell
+    after creating the enum.
+
+    #define EXTRA_ID_TYPE_ENTRANCE  (EXTRA_ID_TYPE:0)
+    #define EXTRA_ID_TYPE_HOUSE     (EXTRA_ID_TYPE:1)
+    #define EXTRA_ID_TYPE_BUSINESS  (EXTRA_ID_TYPE:2)
+
+    If you do not wish to use tags you can simply not include
+    the enum and just make definitions.
+
+    #define EXTRA_ID_TYPE_ENTRANCE  (0)
+    #define EXTRA_ID_TYPE_HOUSE     (1)
+    #define EXTRA_ID_TYPE_BUSINESS  (2)
+*/
+
+#if !defined EXTRA_ID_TYPE
     #define EXTRA_ID_TYPE: _:
 #endif
 
@@ -74,7 +100,7 @@ static stock bool:IsPlayerInDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAM
 
 //----------------------------------------------------------
 
-stock bool:SetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
+stock bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
 {
     if(!s_gItemCustomData)
     {
@@ -93,7 +119,7 @@ stock bool:SetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTR
 
 //----------------------------------------------------------
 
-stock bool:GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
+stock bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
 {
     if(!IsValidDynamicItem(itemtype, itemid))
         return false;
@@ -112,9 +138,9 @@ stock bool:GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXT
 
 //----------------------------------------------------------
 
-stock bool:GetPlayerExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
+stock bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
 {
-    if(!(0 > playerid >= MAX_PLAYERS))
+    if(!(0 <= playerid < MAX_PLAYERS))
         return false;
 
     if(!IsValidDynamicItem(s_gPlayerLastItemType[playerid], s_gPlayerLastItemId[playerid]))
@@ -128,6 +154,7 @@ stock bool:GetPlayerExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
 
     new data[2];
     if(!Streamer_GetArrayData(s_gPlayerLastItemType[playerid], s_gPlayerLastItemId[playerid], s_gItemCustomData, data, sizeof data))
+        return false;
 
     type = EXTRA_ID_TYPE:data[0];
     value = data[1];
@@ -140,7 +167,7 @@ hook OnPlayerEnterDynPickup(playerid, STREAMER_TAG_PICKUP:pickupid)
 {
     if(s_gPlayerLastItemType[playerid] == STREAMER_TYPE_PICKUP && s_gPlayerLastItemId[playerid] == _:pickupid)
         return Y_HOOKS_CONTINUE_RETURN_0;
-        
+
     return OnPlayerEnterDynamicItem(playerid, STREAMER_TYPE_PICKUP, pickupid);
 }
 
@@ -169,9 +196,8 @@ hook OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA:areaid)
 
 static stock OnPlayerEnterDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid)
 {
-
     new EXTRA_ID_TYPE:type, value;
-    if(!GetItemExtraId(itemtype, itemid, type, value))
+    if(!GetStreamerItemExtraId(itemtype, itemid, type, value))
         return Y_HOOKS_CONTINUE_RETURN_0;
 
     s_gPlayerLastItemId[playerid] = _:itemid;
