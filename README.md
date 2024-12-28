@@ -50,9 +50,9 @@ section.
 -->
 
 ```pawn
-bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
-bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
-bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
+bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value);
+bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value);
+bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value);
 ```
 
 ## Testing
