@@ -2,7 +2,28 @@
 //
 //  Streamer Item Extra Id Library
 //  Dependencies: omp-stdlib, samp-streamer-plugin, YSI-Includes (y_hooks)
-//  Copyright (c) 2024 by Veseon.
+//
+//  MIT License
+//
+//  Copyright (c) 2024 Veseon
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 //----------------------------------------------------------
 
@@ -23,7 +44,7 @@
 //----------------------------------------------------------
 
 /*
-    Example enum for extraid tags & definitions.
+    Example enum for extraid tag & definitions.
     Add before including the dependency.
 
     enum EXTRA_ID_TYPE
@@ -100,7 +121,7 @@ static stock bool:IsPlayerInDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAM
 
 //----------------------------------------------------------
 
-stock bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
+stock bool:Streamer_SetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, EXTRA_ID_TYPE:type, value)
 {
     if(!s_gItemCustomData)
     {
@@ -119,7 +140,7 @@ stock bool:SetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:item
 
 //----------------------------------------------------------
 
-static stock bool:GetStreamerItemExtraIdInternal(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
+static stock bool:__Streamer_GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
 {
     if(!Streamer_HasArrayData(itemtype, itemid, s_gItemCustomData))
         return false;
@@ -135,17 +156,17 @@ static stock bool:GetStreamerItemExtraIdInternal(STREAMER_TYPE:itemtype, STREAME
 
 //----------------------------------------------------------
 
-stock bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
+stock bool:Streamer_GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
 {
     if(!IsValidDynamicItem(itemtype, itemid))
         return false;
 
-    return GetStreamerItemExtraIdInternal(itemtype, itemid, type, value);
+    return __Streamer_GetItemExtraId(itemtype, itemid, type, value);
 }
 
 //----------------------------------------------------------
 
-stock bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
+stock bool:Streamer_GetPlayerExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
 {
     if(!(0 <= playerid < MAX_PLAYERS))
         return false;
@@ -173,7 +194,7 @@ stock bool:GetPlayerStreamerItemExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
 hook OnPlayerEnterDynPickup(playerid, STREAMER_TAG_PICKUP:pickupid)
 {
     if(s_gPlayerLastItemType[playerid] == STREAMER_TYPE_PICKUP && s_gPlayerLastItemId[playerid] == _:pickupid)
-        return Y_HOOKS_CONTINUE_RETURN_0;
+        return Y_HOOKS_CONTINUE_RETURN_1;
 
     return OnPlayerEnterDynamicItem(playerid, STREAMER_TYPE_PICKUP, pickupid);
 }
@@ -204,12 +225,12 @@ hook OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA:areaid)
 static stock OnPlayerEnterDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid)
 {
     new EXTRA_ID_TYPE:type, value;
-    if(!GetStreamerItemExtraIdInternal(itemtype, itemid, type, value))
+    if(!__Streamer_GetItemExtraId(itemtype, itemid, type, value))
         return Y_HOOKS_CONTINUE_RETURN_0;
 
     s_gPlayerLastItemId[playerid] = _:itemid;
     s_gPlayerLastItemType[playerid] = itemtype;
-    return Y_HOOKS_BREAK_RETURN_1;
+    return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 //----------------------------------------------------------
