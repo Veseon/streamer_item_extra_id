@@ -140,7 +140,7 @@ stock bool:Streamer_SetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:ite
 
 //----------------------------------------------------------
 
-static stock bool:__Streamer_GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
+static stock bool:GetStreamerItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, &EXTRA_ID_TYPE:type, &value)
 {
     if(!Streamer_HasArrayData(itemtype, itemid, s_gItemCustomData))
         return false;
@@ -161,7 +161,7 @@ stock bool:Streamer_GetItemExtraId(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:ite
     if(!IsValidDynamicItem(itemtype, itemid))
         return false;
 
-    return __Streamer_GetItemExtraId(itemtype, itemid, type, value);
+    return GetStreamerItemExtraId(itemtype, itemid, type, value);
 }
 
 //----------------------------------------------------------
@@ -225,7 +225,7 @@ hook OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA:areaid)
 static stock OnPlayerEnterDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid)
 {
     new EXTRA_ID_TYPE:type, value;
-    if(!__Streamer_GetItemExtraId(itemtype, itemid, type, value))
+    if(!GetStreamerItemExtraId(itemtype, itemid, type, value))
         return Y_HOOKS_CONTINUE_RETURN_0;
 
     s_gPlayerLastItemId[playerid] = _:itemid;
