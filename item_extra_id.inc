@@ -97,7 +97,7 @@ static stock bool:IsValidDynamicItem(STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:i
 
 //----------------------------------------------------------
 
-static stock bool:IsPlayerInDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, Float:pickup_range = 1.0)
+static stock bool:IsPlayerInDynamicItem(playerid, STREAMER_TYPE:itemtype, STREAMER_ALL_TAGS:itemid, Float:pickup_range = 1.3)
 {
     switch(itemtype)
     {
@@ -191,7 +191,7 @@ stock bool:Streamer_GetPlayerExtraId(playerid, &EXTRA_ID_TYPE:type, &value)
 
 //----------------------------------------------------------
 
-hook OnPlayerEnterDynPickup(playerid, STREAMER_TAG_PICKUP:pickupid)
+hook OnPlayerPickUpDynPickup(playerid, STREAMER_TAG_PICKUP:pickupid)
 {
     if(s_gPlayerLastItemType[playerid] == STREAMER_TYPE_PICKUP && s_gPlayerLastItemId[playerid] == _:pickupid)
         return Y_HOOKS_CONTINUE_RETURN_1;
