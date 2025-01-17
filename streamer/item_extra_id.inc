@@ -27,6 +27,13 @@
 //
 //----------------------------------------------------------
 
+#if defined streamer_item_extra_id_included
+    #endinput
+#endif
+#define streamer_item_extra_id_included
+
+//----------------------------------------------------------
+
 #include <open.mp>
 #include <streamer>
 #include <YSI_Coding\y_hooks>

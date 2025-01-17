@@ -37,7 +37,7 @@ sampctl package install Veseon/streamer_item_extra_id
 Include in your code and begin using the library:
 
 ```pawn
-#include <item_extra_id>
+#include <streamer\item_extra_id>
 ```
 
 ## Usage
